@@ -1,0 +1,24 @@
+{
+  "name": "atv-1",
+  "version": "1.0.0",
+  "description": "Primeira atividade da cadeira",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "dev": "noed index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "node",
+    "npm",
+    "freecodecamp",
+    "backend",
+    "api"
+  ],
+  "author": "Julia",
+  "license": "MIT",
+  "dependencies": {
+    "package-name": "version",
+    "express": "^4.18.2"
+  }
+}
