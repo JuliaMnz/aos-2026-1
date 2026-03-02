@@ -1,6 +1,6 @@
 import "dotenv/config";
 import express from "express";
-npm
+
 const app = express();
 
 app.get("/", (req, res) => {
@@ -14,3 +14,5 @@ app.listen(port, () =>
     "Example app listening on port " + port + "!\n" + process.env.MESSAGE
   )
 );
+
+export default app;
