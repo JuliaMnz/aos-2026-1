@@ -4,6 +4,8 @@ const app = express();
 const citacoesCientistas = [
     { autor: "Albert Einstein", citacao: "A imaginação é mais importante que o conhecimento." },
     { autor: "Isaac Newton", citacao: "Se vi mais longe, foi por estar sobre ombros de gigantes." },
+    { autor: "Marie Curie", citacao: "Nada na vida deve ser temido, somente compreendido." },
+    { autor: "Isaac Newton", citacao: "Se vi mais longe, foi por estar sobre ombros de gigantes." },
     { autor: "Nikola Tesla", citacao: "O presente é deles; o futuro, pelo qual eu realmente trabalhei, é meu." },
     { autor: "Richard Feynman", citacao: "O primeiro princípio é que você não deve se enganar." },
     { autor: "Carl Sagan", citacao: "Diante da imensidão do tempo e da vastidão do universo, é um prazer compartilhar um planeta e uma época com você." },
@@ -29,36 +31,98 @@ const citacoesCientistas = [
     { autor: "Werner Heisenberg", citacao: "O que observamos não é a natureza em si, mas a natureza exposta ao nosso método de questionamento." },
     { autor: "Barbara McClintock", citacao: "Se você sabe que está no caminho certo, você tem esse conhecimento interno. Então, ninguém pode te desanimar." },
     { autor: "Chien-Shiung Wu", citacao: "Não há nada mais terrível do que uma mente fechada." }
+    
 ];
 
-// Interface
+// Estilo CSS
+const style = `
+    <style>
+        body { 
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+            height: 100vh; 
+            margin: 0; 
+            background-color: #f0f2f5; 
+            text-align: center;
+        }
+        .card { 
+            background: white; 
+            padding: 2rem; 
+            border-radius: 15px; 
+            shadow: 0 4px 6px rgba(0,0,0,0.1); 
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+            max-width: 80%;
+        }
+        h1 { color: #1a73e8; }
+        p { font-size: 1.2rem; color: #333; }
+        .autor { font-weight: bold; color: #555; margin-top: 10px; display: block; }
+        a { color: #1a73e8; text-decoration: none; font-weight: bold; }
+        a:hover { text-decoration: underline; }
+        .instrucoes { text-align: left; background: #e8f0fe; padding: 15px; border-radius: 8px; }
+    </style>
+`;
+
+// 1. Página Inicial 
 app.get('/', (req, res) => {
     res.send(`
-        <html>
-            <body style="font-family: sans-serif; text-align: center; padding: 50px;">
-                <h1>Painel da API Express</h1>
-                <p>Clique nos botões abaixo para testar os endpoints:</p>
-                <button onclick="window.location.href='/random'">Gerar Número (1-100)</button>
-                <button onclick="window.location.href='/dado'">Jogar Dado (1-6)</button>
-                <button onclick="window.location.href='/citacoes'">Ver Citação</button>
-            </body>
-        </html>
+        ${style}
+        <div class="card">
+            <h1>Documentação da API</h1>
+            <p>Bem-vindo! Esta API fornece dados aleatórios para testes.</p>
+            <div class="instrucoes">
+                <p>Para utilizar, adicione os seguintes sufixos à URL:</p>
+                <ul>
+                    <li><a href="/random">/random</a> - Gera um número entre 1 e 100</li>
+                    <li><a href="/dado">/dado</a> - Simula o lançamento de um dado (1-6)</li>
+                    <li><a href="/citacoes">/citacoes</a> - Exibe uma citação de um cientista</li>
+                </ul>
+            </div>
+            <p style="font-size: 0.9rem; margin-top: 20px;">Desenvolvido para a Atividade 01.</p>
+        </div>
     `);
 });
 
+// 2. Endpoint /random 
 app.get('/random', (req, res) => {
     const num = Math.floor(Math.random() * 100) + 1;
-    res.json({ numero: num });
+    res.send(`
+        ${style}
+        <div class="card">
+            <h1>Número Aleatório</h1>
+            <p style="font-size: 3rem; margin: 0;">${num}</p>
+            <br><a href="/">← Voltar</a>
+        </div>
+    `);
 });
 
+// 3. Endpoint /dado 
 app.get('/dado', (req, res) => {
     const dado = Math.floor(Math.random() * 6) + 1;
-    res.json({ resultado: dado });
+    res.send(`
+        ${style}
+        <div class="card">
+            <h1>Resultado do Dado</h1>
+            <p style="font-size: 4rem; margin: 0;">🎲 ${dado}</p>
+            <br><a href="/">← Voltar</a>
+        </div>
+    `);
 });
 
+// 4. Endpoint /citacoes 
 app.get('/citacoes', (req, res) => {
     const index = Math.floor(Math.random() * citacoesCientistas.length);
-    res.json(citacoesCientistas[index]);
+    const { autor, citacao } = citacoesCientistas[index];
+    res.send(`
+        ${style}
+        <div class="card">
+            <h1>Citação do Dia</h1>
+            <p>"${citacao}"</p>
+            <span class="autor">— ${autor}</span>
+            <br><br><a href="/">← Voltar</a>
+        </div>
+    `);
 });
 
 export default app;
