@@ -79,7 +79,7 @@ app.get('/', (req, res) => {
                     <li><a href="/citacoes">/citacoes</a> - Exibe uma citação de um cientista</li>
                 </ul>
             </div>
-            <p style="font-size: 0.9rem; margin-top: 20px;">Desenvolvido para a Atividade 01.</p>
+            <p style="font-size: 0.9rem; margin-top: 20px;">Desenvolvido para a Atividade 02 da cadeira de aplicação orientada a serviços.</p>
         </div>
     `);
 });
