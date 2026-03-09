@@ -1,0 +1,16 @@
+{
+  "name": "api-express-vercel",
+  "version": "1.0.0",
+  "type": "module",
+  "description": "Atividade Express para Vercel",
+  "main": "api/index.js",
+  "scripts": {
+    "start": "node api/index.js"
+  },
+  "dependencies": {
+    "express": "^4.22.1"
+  },
+  "keywords": [],
+  "author": "Julia Muniz",
+  "license": "MIT"
+}
