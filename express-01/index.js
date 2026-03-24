@@ -12,12 +12,17 @@ app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// Middleware de Contexto: Define quem é o usuário "logado" e passa os modelos
 app.use(async (req, res, next) => {
-  req.context = {
-    models,
-    me: await models.User.findOne({ where: { username: "rwieruch" } }),
-  };
+  try {
+    const me = await models.User.findOne({ where: { username: "rwieruch" } });
+    req.context = {
+      models,
+      me: me || null, // Se não achar, passa null em vez de quebrar
+    };
+  } catch (e) {
+    // Se o banco ainda não tiver a tabela, o servidor não crasha
+    req.context = { models, me: null };
+  }
   next();
 });
 
@@ -42,41 +47,33 @@ app.get("/", (req, res) => {
 const port = process.env.PORT ?? 3000;
 
 // Sincronização com o Banco de Dados (PostgreSQL no NeonDB)
-const eraseDatabaseOnSync = process.env.ERASE_DATABASE_ON_SYNC === "true";
+const eraseDatabaseOnSync = process.env.ERASE_DATABASE_ON_SYNC === 'true';
 
+// Esta função cria os dados iniciais se o banco for resetado
+const createInitialData = async () => {
+  const user1 = await models.User.create({
+    username: 'rwieruch',
+  });
+
+  await models.Message.create({
+    text: 'Publicou um projeto no NeonDB!',
+    userId: user1.id,
+  });
+};
+
+// Sincroniza o banco e DEPOIS sobe o servidor
 sequelize.sync({ force: eraseDatabaseOnSync }).then(async () => {
   if (eraseDatabaseOnSync) {
+    console.log("--> Populando banco de dados inicial...");
     await createInitialData();
   }
 
-  app.listen(port, () =>
-    console.log(`Aplicação ouvindo na porta ${port}!`)
-  );
+  // Na Vercel, o app.listen não é obrigatório, mas ajuda no log local
+  if (process.env.NODE_ENV !== 'production') {
+    app.listen(3000, () => console.log('Servidor rodando na porta 3000!'));
+  }
+}).catch(err => {
+  console.error('Erro ao sincronizar com o Neon:', err);
 });
-
-// Função para popular o banco caso esteja vazio (apenas para teste)
-const createInitialData = async () => {
-  await models.User.create(
-    {
-      username: "rwieruch",
-      email: "rwieruch@email.com",
-      messages: [
-        { text: "Publicado o tutorial de React" },
-      ],
-    },
-    { include: [models.Message] }
-  );
-
-  await models.User.create(
-    {
-      username: "ddavids",
-      email: "ddavids@email.com",
-      messages: [
-        { text: "Feliz em lançar o projeto!" },
-      ],
-    },
-    { include: [models.Message] }
-  );
-};
 
 export default app;
