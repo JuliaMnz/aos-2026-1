@@ -1,18 +1,30 @@
-import "dotenv/config";
-import express from "express";
+import Sequelize from "sequelize";
+import getUserModel from "./user";
+import getMessageModel from "./message";
 
-const app = express();
-
-app.get("/", (req, res) => {
-  res.send("Servidor rodando!\n" + process.env.MESSAGE);
+const sequelize = new Sequelize(process.env.DATABASE_URL, {
+  dialect: "postgres",
+  protocol: "postgres",
+  dialectOptions: {
+    ssl: {
+      require: true,
+      rejectUnauthorized: false,
+    },
+  },
+  dialectModule: require("pg"),
 });
 
-const port = process.env.PORT ?? 3000;
+const models = {
+  User: getUserModel(sequelize, Sequelize),
+  Message: getMessageModel(sequelize, Sequelize),
+};
 
-app.listen(port, () =>
-  console.log(
-    "Example app listening on port " + port + "!\n" + process.env.MESSAGE
-  )
-);
+Object.keys(models).forEach((key) => {
+  if ("associate" in models[key]) {
+    models[key].associate(models);
+  }
+});
 
-export default app;
+export { sequelize };
+
+export default models;

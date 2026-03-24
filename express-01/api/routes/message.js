@@ -9,7 +9,7 @@ router.get("/", async (req, res) => {
   return res.send(messages);
 });
 
-//GET
+//GET /:messageId -
 router.get("/:messageId", async (req, res) => {
   const message = await req.context.models.Message.findByPk(
     req.params.messageId,
@@ -17,7 +17,7 @@ router.get("/:messageId", async (req, res) => {
   return res.send(message);
 });
 
-//POST
+//POST /messages - Criar mensagem
 router.post("/", async (req, res) => {
   const message = await req.context.models.Message.create({
     text: req.body.text,
@@ -27,7 +27,16 @@ router.post("/", async (req, res) => {
   return res.send(message);
 });
 
-//POST /messages
+//PUT /messages - Atualizar mensagem
+router.put('/:messageId', async (req, res) => {
+  const message = await req.context.models.Message.findByPk(req.params.messageId);
+  if (message) {
+    await message.update({ text: req.body.text });
+  }
+  return res.send(message);
+});
+
+//DELETE /messages - Deletar mensagem
 
 router.delete("/:messageId", async (req, res) => {
   const result = await req.context.models.Message.destroy({
