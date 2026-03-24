@@ -1,10 +1,12 @@
 {
   "name": "express-01",
   "version": "1.0.0",
-  "description": "Projeto Express +PostgreSQL para estudo",
-  "main": "api/index.js",
+  "description": "Projeto Express + PostgreSQL para estudo",
+  "main": "index.js",
+  "type": "module",
   "scripts": {
-    "start": "nodemon --exec babel-node api/index.js"
+    "start": "node index.js",
+    "dev": "nodemon index.js"
   },
   "keywords": [
     "express",
@@ -13,7 +15,6 @@
   ],
   "author": "Julia Muniz",
   "license": "MIT",
-  "type": "commonjs",
   "dependencies": {
     "@babel/core": "^7.29.0",
     "@babel/node": "^7.29.0",
