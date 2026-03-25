@@ -14,13 +14,13 @@ app.use(express.urlencoded({ extended: true }));
 
 app.use(async (req, res, next) => {
   try {
-    const me = await models.User.findOne({ where: { username: "rwieruch" } });
-    req.context = {
-      models,
-      me: me || null, // Se não achar, passa null em vez de quebrar
-    };
-  } catch (e) {
-    // Se o banco ainda não tiver a tabela, o servidor não crasha
+    // Tenta buscar o usuário, mas se não achar (banco vazio), não crasha o site
+    const me = await models.User.findOne({
+      where: { username: "rwieruch" },
+    });
+    req.context = { models, me };
+  } catch (error) {
+    // Se der erro de conexão ou tabela inexistente, o servidor continua vivo
     req.context = { models, me: null };
   }
   next();
