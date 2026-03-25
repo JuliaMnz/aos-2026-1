@@ -4,7 +4,7 @@
   "description": "Projeto Express + PostgreSQL para estudo",
   "main": "api/index.js",
   "scripts": {
-    "start": "nodemon --exec babel-node api/index.js"
+    "start": "nodemon --exec babel-node index.js"
   },
   "keywords": [
     "express",
