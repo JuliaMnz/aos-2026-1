@@ -1,38 +1,47 @@
-import models from '../models/index.js';
+import axios from "axios";
+const urlBase = "https://aos-2026-1-qnin.vercel.app/tarefas";
 
-const criarTarefa = async (tarefaData) => {
-    return await models.Tarefa.create(tarefaData);
+const headersJson = {
+  "Content-Type": "application/json",
 };
 
-const listarTarefas = async () => {
-    return await models.Tarefa.findAll();
-};
+ // Busca todas as tarefas
+export async function getTarefas() {
+  const response = await axios.get(urlBase);
+  return response.data; 
+}
 
-const buscarTarefaPorId = async (id) => {
-    return await models.Tarefa.findByPk(id);
-};
 
-const atualizarTarefa = async (id, data) => {
-    const tarefa = await models.Tarefa.findByPk(id);
-    if (tarefa) {
-        return await tarefa.update(data);
+ // Busca uma tarefa específica pelo ID
+export async function getTarefa(id) {
+  const response = await axios.get(`${urlBase}/${id}`);
+  return response.data;
+}
+
+ // Adiciona uma nova tarefa
+export async function adicionarTarefa(novaTarefa) {
+  const response = await axios.post(urlBase, novaTarefa, {
+    headers: headersJson,
+  });
+  return response.data;
+}
+
+ // Atualiza uma tarefa existente
+export async function atualizarTarefa(tarefaAtualizada) {
+  const id = tarefaAtualizada.id;
+  
+  const response = await axios.put(
+    `${urlBase}/${id}`,
+    tarefaAtualizada,
+    {
+      headers: headersJson,
     }
-    return null;
-};
+  );
+  return response.data;
+}
 
-const deletarTarefa = async (id) => {
-    const tarefa = await models.Tarefa.findByPk(id);
-    if (tarefa) {
-        await tarefa.destroy();
-        return true;
-    }
-    return null;
-};
-
-export default {
-    criarTarefa,
-    listarTarefas,
-    buscarTarefaPorId,
-    atualizarTarefa,
-    deletarTarefa
-};
+ // Remove uma tarefa
+export async function removerTarefa(id) {
+  const response = await axios.delete(`${urlBase}/${id}`);
+  return response.data;
+}
