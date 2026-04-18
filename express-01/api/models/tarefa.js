@@ -1,32 +1,15 @@
-const getTarefaModel = (sequelize, { DataTypes }) => {
-  const Tarefa = sequelize.define("tarefa", {
-    objectId: {
-      type: DataTypes.UUID,
-      defaultValue: DataTypes.UUIDV4,
-      primaryKey: true,
-      field: 'objectid', // Força o mapeamento para o nome exato no banco
-    },
-    descricao: {
-      type: DataTypes.STRING,
-      allowNull: false,
-      field: 'descricao',
-    },
-    concluida: {
-      type: DataTypes.BOOLEAN,
-      defaultValue: false,
-      field: 'concluida',
-    },
-    createdAt: {
-      type: DataTypes.DATE,
-      field: 'created_at', // Mapeia o createdAt do Sequelize para o created_at do SQL
-    }
-  }, {
-    tableName: 'tarefas', 
-    timestamps: true,     
-    updatedAt: false,     
-  });
+import { DataTypes, Model } from 'sequelize';
+import sequelize from './index.js'; 
 
-  return Tarefa;
-};
+class Tarefa extends Model {}
 
-export default getTarefaModel;
+Tarefa.init({
+  descricao: { type: DataTypes.STRING, allowNull: false },
+  concluida: { type: DataTypes.BOOLEAN, defaultValue: false }
+}, {
+  sequelize,
+  modelName: 'Tarefa',
+  tableName: 'tarefas'
+});
+
+export default Tarefa; 

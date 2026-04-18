@@ -3,11 +3,16 @@ import Tarefa from '../models/tarefa.js';
 
 const create = async (req, res) => {
   try {
-    const novaTarefa = await Tarefa.create(req.body);
-    
+    const ModeloTarefa = Tarefa.create ? Tarefa : Tarefa.default;
+
+    if (!ModeloTarefa || !ModeloTarefa.create) {
+        throw new Error("Não foi possível localizar o método create.");
+    }
+
+    const novaTarefa = await ModeloTarefa.create(req.body);
     return res.status(201).json(novaTarefa);
+    
   } catch (error) {
-    // Se a validação do Sequelize falhar, ele cai aqui no catch
     return res.status(400).json({ error: error.message });
   }
 };
