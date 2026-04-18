@@ -1,15 +1,10 @@
-import { DataTypes, Model } from 'sequelize';
-import sequelize from './index.js'; 
+import { Model } from 'sequelize';
 
-class Tarefa extends Model {}
+class Tarefa extends Model {
+  // Se tiver associações, elas entram aqui:
+  static associate(models) {
+    // Ex: this.belongsTo(models.User);
+  }
+}
 
-Tarefa.init({
-  descricao: { type: DataTypes.STRING, allowNull: false },
-  concluida: { type: DataTypes.BOOLEAN, defaultValue: false }
-}, {
-  sequelize,
-  modelName: 'Tarefa',
-  tableName: 'tarefas'
-});
-
-export default Tarefa; 
+export default Tarefa;
