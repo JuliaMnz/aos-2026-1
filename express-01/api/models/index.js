@@ -1,24 +1,25 @@
 import Sequelize from "sequelize";
-import getUserModel from "./user";
-import getMessageModel from "./message";
-import pg from 'pg';
+import pg from 'pg'; 
+import getUserModel from "./user.js";
+import getMessageModel from "./message.js";
+import getTarefaModel from "./tarefa.js"; 
 
 const sequelize = new Sequelize(process.env.DATABASE_URL, {
   dialect: "postgres",
   protocol: "postgres",
-  dialectModule: pg,
+  dialectModule: pg, 
   dialectOptions: {
     ssl: {
       require: true,
       rejectUnauthorized: false,
     },
   },
-  dialectModule: require("pg"),
 });
 
 const models = {
   User: getUserModel(sequelize, Sequelize),
   Message: getMessageModel(sequelize, Sequelize),
+  Tarefa: getTarefaModel(sequelize, Sequelize), 
 };
 
 Object.keys(models).forEach((key) => {
@@ -28,5 +29,4 @@ Object.keys(models).forEach((key) => {
 });
 
 export { sequelize };
-
 export default models;

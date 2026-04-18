@@ -1,0 +1,1 @@
+export { default as tarefaController } from "./tarefaController.js"; 
