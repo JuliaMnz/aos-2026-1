@@ -2,14 +2,14 @@ import tarefaService from '../services/tarefaService.js';
 import Tarefa from '../models/tarefa.js';
 
 const create = async (req, res) => {
-    const validationError = Tarefa.validate(req.body);
-    if (validationError) return res.status(400).json(validationError);
-    try {
-        const novaTarefa = await tarefaService.criarTarefa(req.body);
-        res.status(201).json(novaTarefa);
-    } catch (error) {
-        res.status(500).json({ error: "Erro ao criar tarefa." });
-    }
+  try {
+    const novaTarefa = await Tarefa.create(req.body);
+    
+    return res.status(201).json(novaTarefa);
+  } catch (error) {
+    // Se a validação do Sequelize falhar, ele cai aqui no catch
+    return res.status(400).json({ error: error.message });
+  }
 };
 
 const getAll = async (req, res) => {
