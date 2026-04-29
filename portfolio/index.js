@@ -14,6 +14,10 @@ app.get('/', (req, res) => {
 
 app.use('/api', routes);
 
+app.get('/', (req, res) => {
+  res.json({ status: "API Online", message: "Acesse /api/pessoas para ver os dados" });
+});
+
 const PORT = process.env.PORT || 3000;
 
 app.listen(PORT, () => {
