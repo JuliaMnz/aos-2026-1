@@ -1,14 +1,13 @@
 const { Sequelize } = require('sequelize');
+const pg = require('pg'); // Importação explícita do driver
 
-// Só carrega o dotenv se não estiver na Vercel
 if (!process.env.VERCEL) {
     require('dotenv').config();
 }
 
 const sequelize = new Sequelize(process.env.DATABASE_URL, {
     dialect: 'postgres',
-    // ESTA LINHA É A CHAVE: Força a Vercel a usar o pacote 'pg' instalado
-    dialectModule: require('pg'), 
+    dialectModule: pg, // Força o Sequelize a usar o pacote importado acima
     dialectOptions: {
         ssl: {
             require: true,
