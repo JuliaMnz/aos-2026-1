@@ -2,6 +2,7 @@ import Sequelize from "sequelize";
 import pg from 'pg'; 
 import getUserModel from "./user.js";
 import getMessageModel from "./message.js";
+import getRefreshTokenModel from "./refreshToken.js";
 import Tarefa from "./tarefa.js"; 
 
 const sequelize = new Sequelize(process.env.DATABASE_URL, {
@@ -28,6 +29,7 @@ Tarefa.init({
 const models = {
   User: getUserModel(sequelize, Sequelize),
   Message: getMessageModel(sequelize, Sequelize),
+  RefreshToken: getRefreshTokenModel(sequelize, Sequelize),
   Tarefa: Tarefa, 
 };
 

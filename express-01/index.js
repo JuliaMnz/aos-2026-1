@@ -54,6 +54,8 @@ const eraseDatabaseOnSync = process.env.ERASE_DATABASE_ON_SYNC === 'true';
 const createInitialData = async () => {
   const user1 = await models.User.create({
     username: 'rwieruch',
+    email: 'rwieruch@teste.com', 
+    password: 'senha123'
   });
 
   await models.Message.create({
