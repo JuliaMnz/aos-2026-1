@@ -15,7 +15,7 @@ const getUserModel = (sequelize, { DataTypes }) => {
       validate: { notEmpty: true, isEmail: true },
     },
     password: {
-      type: DataTypes.STRING,
+      type: DataTypes.STRING(255),
       allowNull: false,
       validate: { notEmpty: true },
     },
